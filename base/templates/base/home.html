@@ -1,0 +1,86 @@
+{% extends 'base/layout.html' %} {% block body %}
+<div class="home_body">
+  {%if categoryName%}
+  <h1 style="margin-bottom: 30px">{{categoryName}}</h1>
+  {%endif%} {% for recipe in recipes %}
+  <div class="recipie_wrapper">
+    <a
+      href="{% url 'recipe' recipe.id %}"
+      style="text-decoration: none; color: #1a222d"
+    >
+      <div class="recipe_post_container">
+        <h2>{{recipe.title}}</h2>
+
+        <div class="recipe_post_divider">
+          <div>
+            <span class="badge text-bg-light">RATING: </span
+            ><span class="badge text-bg-light"
+              >{{recipe.rating.avg_rating}}
+              <i class="rating__star fas fa-star" style="color: #dabd18b2"></i
+            ></span>
+          </div>
+          <div style="padding-left: 10px">
+            <span class="badge text-bg-light"
+              >{{recipe.review.count_review}} REVIEWS</span
+            >
+          </div>
+          <div style="padding-left: 10px">
+            <span class="badge text-bg-light">{{recipe.create_at}}</span>
+          </div>
+        </div>
+        <div class="recipe_post_description_container" style="margin-top: 10px">
+          <p style="margin-bottom: 0">{{recipe.description}}</p>
+        </div>
+        <div style="margin-bottom: 10px">
+          {%if recipe.recipe_allergy_ingrediets%}
+          <span class="badge text-bg-light" style="color: rgba(26, 34, 45, 0.6)"
+            >Ingredients include:
+          </span>
+          {%for i in recipe.recipe_allergy_ingrediets%}
+          <span
+            class="badge text-bg-danger"
+            style="color: #1a222d; background-color: red"
+            >{{i}}</span
+          >
+          {%endfor%} {%elif recipe.recipe_favorite_ingrediets%}
+          <span class="badge text-bg-light" style="color: rgba(26, 34, 45, 0.6)"
+            >Ingredients include your favorite:
+          </span>
+          {%for i in recipe.recipe_favorite_ingrediets%}
+          <span
+            class="badge text-bg-danger"
+            style="color: #1a222d; background-color: #71c6dd"
+            >{{i}}</span
+          >
+          {%endfor%} {%endif%}
+        </div>
+        <div class="image"><img src="media/{{recipe.image}}" /></div>
+      </div>
+    </a>
+    <div class="recipe_post_footer_container">
+      <span style="color: #1a222d" class="badge text-bg-light">By: </span>
+      <a class="recipe_user_profile" href="{% url 'profile' recipe.user.id%}">
+        <svg
+          style="margin: 0"
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="#e0e0e0"
+          class="bi bi-person-circle"
+          viewBox="0 0 16 16"
+        >
+          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+          <path
+            fill-rule="evenodd"
+            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+          />
+        </svg>
+        <span style="color: #e0e0e0; padding: 0" class="badge text-bg-light"
+          >{{recipe.user.username}}</span
+        >
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{%endblock%}

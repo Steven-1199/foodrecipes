@@ -1,0 +1,92 @@
+{% extends 'base/layout.html' %} {% block body %}
+<div class="share_recipes_container">
+  <form
+    method="post"
+    action="{% url 'shareRecipes' %}"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div>
+      <label>Title: </label>
+      {{recipeForm.title}}
+    </div>
+    <div>
+      <label>Image: </label>
+      {{recipeForm.image}}
+    </div>
+    <div>
+      <label>Description: </label>
+      {{recipeForm.description}}
+    </div>
+    <div>
+      <label>Ingredients: </label>
+      {{recipeForm.ingredients}}
+    </div>
+    <div>
+      <label>Total time(in min): </label>
+      {{recipeForm.totalTime}}
+    </div>
+    <div>
+      <label>Category: </label>
+      <input
+        list="category_form"
+        class="select_category"
+        placeholder="Select category"
+      />
+      <datalist id="category_form"> </datalist>
+      <input
+        type="button"
+        class="select_categories"
+        value="Select"
+        style="width: fit-content; margin: 10px 0"
+      />
+      <input disabled type="text" class="categories_views" />
+      {{recipeForm.categories}}
+    </div>
+    <div class="direction_container" style="margin-top: 20px">
+      <label style="font-weight: bold">Direction: </label>
+      <div class="step_textarea_container" style="margin-top: 0">
+        <div>
+          <span>Step 1: </span>
+          <textarea type="text" class="step" id="step1"></textarea>
+          <div id="step1View"></div>
+        </div>
+        {{recipeForm.directions}}
+      </div>
+      <div
+        name="share_recipe_btn_container"
+        style="display: flex; flex-direction: row; gap: 10px"
+      >
+        <div class="btn btn--main" name="" id="step_done">Done</div>
+        <div
+          class="addStep"
+          name=""
+          style="
+            border: 1.5px #71c6dd solid;
+            border-radius: 5px;
+            height: fit-content;
+            background-color: transparent;
+          "
+        >
+          Add another step
+        </div>
+        <div
+          class="resetStep"
+          name=""
+          style="
+            border: 1.5px black solid;
+            border-radius: 5px;
+            height: fit-content;
+            background-color: transparent;
+          "
+        >
+          Reset Steps
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="recipeForm_submit" style="margin: 20px 0">
+      submit
+    </button>
+  </form>
+</div>
+{%endblock%}

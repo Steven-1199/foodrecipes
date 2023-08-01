@@ -1,0 +1,25 @@
+{% extends 'base/layout.html' %} {% block body %}
+
+<div class="edit_profile_body">
+  <div class="edit_prfile_container">
+    <form
+      method="post"
+      action="{% url 'editProfile'%}"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+      <div class="edit_first_last_name">
+        <label>Last Name:</label>
+        {{editProfileForm.last_name}}
+        <label style="margin-left: 10px">First Name:</label>
+        {{editProfileForm.first_name}}
+      </div>
+      <div><label>Username:</label>{{editProfileForm.username}}</div>
+      <div><label>Email:</label>{{editProfileForm.email}}</div>
+      <div><label>Bio:</label>{{editProfileForm.bio}}</div>
+      <div style="display: block">{{editProfileForm.avatar}}</div>
+      <button type="submit" class="btn btn-outline-light">Save</button>
+    </form>
+  </div>
+</div>
+{%endblock%}

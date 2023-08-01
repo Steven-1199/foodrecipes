@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    {{ form.media }}
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'base/styles.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+      integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/1dd06a2dc6.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Food Recipes</title>
+  </head>
+  <body>
+    <div class="body">
+      <div class="left_container">
+        <div class="page_title">
+          <h1>Food Recipes</h1>
+          <img style="display: none" src="\static\base\logo.png" />
+        </div>
+        <div class="category_container">
+          <span>CATEGORY</span>
+          <div style="margin-top: 30px">
+            <div class="category_inner_container">
+              <div class="category" id="category_more"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right_container">
+        <div class="navbar">
+          <div class="navbar_left">
+            <div style="display: none" class="search_bar_small">
+              <nav
+                class="navbar navbar-dark bg-dark"
+                style="background-color: transparent !important; width: 10px"
+              >
+                <div class="container-fluid">
+                  <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarToggleExternalContent"
+                    aria-controls="navbarToggleExternalContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-search"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </nav>
+              <div
+                style="
+                  background-color: transparent !important;
+                  position: absolute;
+                "
+                class="collapse"
+                id="navbarToggleExternalContent"
+              >
+                <div class="bg-dark p-4">
+                  <form
+                    class="d-flex"
+                    role="search"
+                    method="post"
+                    action="{%url 'index'%}"
+                  >
+                    {% csrf_token %}
+                    <input
+                      class="form-control me-2 search_input"
+                      type="search"
+                      placeholder="Search Recipes..."
+                      aria-label="Search"
+                      name="search"
+                    />
+                  </form>
+                </div>
+              </div>
+            </div>
+            <form
+              class="d-flex"
+              role="search"
+              method="post"
+              action="{%url 'index'%}"
+            >
+              {% csrf_token %}
+              <input
+                id="search_input"
+                class="form-control me-2 search_input"
+                type="search"
+                placeholder="Search Recipes..."
+                aria-label="Search"
+                name="search"
+              />
+            </form>
+          </div>
+          <div class="navbar_right">
+            <a class="navbar_explore" href="{% url 'index' %}">
+              <span class="badge text-bg-light">Expore</span>
+            </a>
+            <a class="navbar_sharerecipes" href="{% url 'shareRecipes' %}">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-plus-lg"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
+                />
+              </svg>
+              <span class="badge text-bg-light">Share Recipes</span>
+            </a>
+
+            {% if user.is_authenticated %}
+            <div class="dropdown-center">
+              <button
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                class="btn btn-secondary dropdown-toggle recipe_user_profile"
+                style="
+                  background-color: #71c6dd;
+                  padding: 8px 15px;
+                  border-radius: 10px;
+                "
+              >
+                <svg
+                  style="margin: 0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="#1a222d"
+                  class="bi bi-person-circle"
+                  viewBox="0 0 16 16"
+                  style="color: #1a222d; fill: #1a222d"
+                >
+                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                  <path
+                    fill-rule="evenodd"
+                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                  />
+                </svg>
+                <span
+                  style="color: #1a222d; padding: 0; font-size: 14px"
+                  class="badge text-bg-light"
+                  >{{user.username}}</span
+                >
+              </button>
+              <ul class="dropdown-menu" style="left: 80%">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="{% url 'profile' userId=user.id%}"
+                    >Profile</a
+                  >
+                </li>
+                <li id="navbar_sharerecipes_dropdown">
+                  <a class="dropdown-item" href="{% url 'shareRecipes' %}">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-plus-lg"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
+                      />
+                    </svg>
+                    Share Recipes
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{%url 'preference'%}"
+                    >My Preference</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{%url 'editProfile'%}"
+                    >Edit Profile</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="navbar_profile dropdown-item"
+                    href="{% url 'logout' %}"
+                  >
+                    <span style="color: #1a222d">Logout</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {% else %}
+            <a class="navbar_profile" href="{% url 'login' %}">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-person-circle"
+                viewBox="0 0 16 16"
+              >
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                <path
+                  fill-rule="evenodd"
+                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                />
+              </svg>
+              <span>Login</span>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+        <div>{% block body %}{% endblock %}</div>
+      </div>
+    </div>
+    <script src="{% static 'base/util.js' %}"></script>
+  </body>
+</html>

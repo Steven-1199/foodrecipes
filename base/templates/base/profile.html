@@ -1,0 +1,252 @@
+ {% extends "base/layout.html" %} {% load static %} {% block body %} 
+<div class="profile_body">
+  <div class="profile_hearder">
+    <div class="profile_header_left">
+      <div class="profile_header_left_img_container">
+       {%if userProfile.avatar%}
+       <img src="{{userProfile.avatar.url}}">
+       {%else%}
+       <svg
+       style="margin: 0"
+       xmlns="http://www.w3.org/2000/svg"
+       width="100%"
+       height="auto"
+       fill="#e0e0e0"
+       class="bi bi-person-circle"
+       viewBox="0 0 16 16"
+     >
+       <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+       <path
+         fill-rule="evenodd"
+         d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+       />
+     </svg>
+     {% endif %}
+      </div>
+      <div class="profile_header_left_bottom">
+        {%if not user.is_authenticated%}
+        <a href="{% url 'login'%}">
+          <div  style="border: 5px #71c6dd double; border-radius: 8px; padding: 3px"
+        class="profile_follow_btn"
+      >
+        <span
+          style="color: #e0e0e0; font-size: 13px"
+          class="badge text-bg-light"
+          >FOLLOW {{userProfile.username}} </span
+        ></div>
+      </a>
+      {%else%}
+      {%if userProfile.id == user.id%}
+      <div
+        style="border: 5px #71c6dd double; border-radius: 8px; padding: 3px"
+        class="profile_follow_btn"
+      >
+        <span
+          style="color: #e0e0e0; font-size: 13px"
+          class="badge text-bg-light"
+          >Hello {{userProfile.username}}</span
+        >
+      </div>
+      {%elif followOrNot%}
+      <a href="{% url 'unfollow' userProfile.id%}">
+        <div  style="border: 5px #71c6dd double; background-color: #71c6dd; border-radius: 8px; padding: 3px"
+      class="profile_follow_btn"
+    >
+      <span
+        style="color: #e0e0e0; font-size: 13px"
+        class="badge text-bg-light"
+        >UNFOLLOW {{userProfile.username}}</span
+      >
+    </div>
+      </a>
+      {%else%}
+      <a href="{% url 'follow' userProfile.id%}">
+        <div  style="border: 5px #71c6dd double; border-radius: 8px; padding: 3px"
+      class="profile_follow_btn"
+    >
+      <span
+        style="color: #e0e0e0; font-size: 13px"
+        class="badge text-bg-light"
+        >FOLLOW {{userProfile.username}}</span
+      ></div>
+    </a>
+      {%endif%}
+        {% endif %}
+     
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            FOLLOWER: <span class="badge rounded-pill text-bg-light">{{userProfile.count_follower.count_follower}}</span>
+          </li>
+          <li class="list-group-item">
+            RECIPES: <span class="badge rounded-pill text-bg-light">{{userProfile.count_recipe.count_recipe}}</span>
+          </li>
+        </ul>
+        
+      </div>
+      {%if userProfile.id == user.id%}
+      
+      <div  class="profile_header_left_bottom_featuer">
+        <a href="/profile/{{userProfile.id}}"   style="border-top: 1px lightgray solid">
+          <span id="home_btn"  class="badge text-bg-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
+            <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
+          </svg>Home</span>
+        </a>
+        <a href="?savedcollection"  class="saved_collection_btn" >
+          <span id="saved_collection_btn" class="badge text-bg-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
+            <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+          </svg>Saved Collection</span>
+        </a>
+        <a href="?following">
+          <span  id="following_btn" class="badge text-bg-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+          </svg>Following</span>
+        </a>
+      </div>
+      {%endif%}
+    </div>
+    <div class="profile_header_right">
+    {%if user.is_authenticated and userProfile.id == user.id%}
+    <div id="profile_header_right_saved_collection" style="display: none;">
+      <h1 class="header_collection">Saved Collection</h1>
+    <div class="profile_header_right_saved_collection_card_container" style="flex-wrap: wrap;">
+     
+    </div>
+   
+    </div>
+    <div class="profile_header_right_following" style="display: none;margin-left: 10px;">
+      <div class="list-group">
+       <h2 style="font-weight: bold;">Following</h2>
+        {%for person in following%}
+        <a href="{%url 'profile' person.follow.id%}" style="font-size: 16px;background-color: white !important; color: #1a222d !important; display: flex !important; justify-content: flex-start !important; align-items: center !important; gap:10px !important;" href="#" class="list-group-item list-group-item-action">
+          {%if person.follow.avatar%}
+          <img src="{{person.follow.avatar.url}}" alt="Avatar" class="avatar" style="vertical-align: middle;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%">
+          {%else%}
+          <div style="vertical-align: middle;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%">
+          <svg
+          style="margin: 0"
+          xmlns="http://www.w3.org/2000/svg"
+          width="100%"
+          height="auto"
+          fill="#e0e0e0"
+          class="bi bi-person-circle"
+          viewBox="0 0 16 16"
+        >
+          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+          <path
+            fill-rule="evenodd"
+            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+          />
+        </svg>
+          </div>
+{%endif%}
+          {{person.follow.username}}</a>
+        {%endfor%}
+      
+      </div>
+    </div>
+    {%endif%}
+      <div id="profile_header_right_home">
+        <div class="wrapper">
+          <div class="profile_header_right_top">
+            {% if userProfile.first_name %}
+            <h2>
+              {{userProfile.first_name.capitalize}}
+              {{userProfile.last_name.capitalize}}
+            </h2>
+            {%else%}
+            <h2>{{userProfile.username}}</h2>
+            {% endif %} {%if user.id == userProfile.id%}
+            <a href="{%url 'editProfile'%}" style="text-decoration: none; color: rgb(175, 173, 173);">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-pencil-square"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                />
+                <path
+                  fill-rule="evenodd"
+                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+                />
+              </svg>
+              <span>Edit</span>
+            </a>
+            {%endif%}
+          </div>
+          {% if userProfile.bio %}
+          <p style="font-family: sans-serif">{{userProfile.bio}}</p>
+          {% endif %}
+        </div>
+        {% for recipe in recipes %}
+        <div class="recipie_wrapper">
+          <a
+            href="{% url 'recipe' recipe.id %}"
+            style="text-decoration: none; color: #1a222d"
+          >
+            <div class="recipe_post_container">
+              <h2>{{recipe.title}}</h2>
+              <div class="recipe_post_divider">
+                <div>
+                  <span class="badge text-bg-light">RATING: </span
+                  ><span class="badge text-bg-light"
+                    >{{recipe.rating.avg_rating}}
+                    <i class="rating__star fas fa-star" style="color: #dabd18b2"></i
+                  ></span>
+                </div>
+                <div style="padding-left: 10px">
+                  <span class="badge text-bg-light">{{recipe.review.count_review}} REVIEWS</span>
+                </div>
+                <div style="padding-left: 10px">
+                  <span class="badge text-bg-light">{{recipe.create_at}}</span>
+                </div>
+              </div>
+              <div class="recipe_post_description_container" style="margin-top: 10px">
+                <p>{{recipe.description}}</p>
+              </div>
+              <div class="image"><img src="{{recipe.image.url}}" /></div>
+            </div>
+          </a>
+          <div class="recipe_post_footer_container">
+            <span style="color: #1a222d" class="badge text-bg-light">By: </span>
+            <a class="recipe_user_profile" href="{% url 'profile' recipe.user.id%}">
+              <svg
+                style="margin: 0"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="#e0e0e0"
+                class="bi bi-person-circle"
+                viewBox="0 0 16 16"
+              >
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                <path
+                  fill-rule="evenodd"
+                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                />
+              </svg>
+              <span style="color: #e0e0e0; padding: 0" class="badge text-bg-light"
+                >{{recipe.user.username}}</span
+              >
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    </div>
+  </div>
+  <script src="{% static 'base/profile.js' %}"></script>
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base/layout.html' %} {% block body %}
+<div class="preference_body">
+  <div class="preference_container">
+    <h3 style="color: #e0e0e0; margin-bottom: 40px">Preference</h3>
+    <form action="{% url 'preference' %}" method="post">
+      {% csrf_token %}
+      <div>
+        <label>Allergy Ingredients:</label>{{preferenceForm.allergy_ingrediets}}
+      </div>
+      <div>
+        <label> Favorite Ingredients:</label
+        >{{preferenceForm.favorite_ingrediets}}
+      </div>
+      <button type="submit" class="btn btn-outline-light">Save</button>
+    </form>
+  </div>
+</div>
+{%endblock%}
